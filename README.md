@@ -7,3 +7,6 @@ It's based on [jncep](https://github.com/gvellut/jncep) for the novel rip part. 
 ### 💀 If you find this before JNC Nina died, well done !
 
 Fill the .env (create a new file '.env' and use the template provited) and start the docker container. You can upload to mega.io and get a discord notification.
+
+
+![Sans titre](https://github.com/user-attachments/assets/70a5aab6-45ae-4702-b737-73ea67d9ad89)
