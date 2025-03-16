@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  scrapper:
+    container_name: jncscrapper
+    image : jncscrapper
+    build : .
+    volumes:
+      - D:\dev\scrapper\jnc-nina_scrapper\shared\:/home/shared/
+    networks:
+      - jncscrapperbot
+
+networks:
+  jncscrapperbot:
