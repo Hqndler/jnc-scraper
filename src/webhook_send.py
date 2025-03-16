@@ -14,8 +14,8 @@ async def send_webhook(links, files, covers):
     print("Discord msg send")
 
     webhook1 = webhook_api + os.environ.get("DISCORD_SCAN_WEBHOOK_ID") + "/" + os.environ.get("DISCORD_SCAN_WEBHOOK_TOKEN")
-    webhook2 = webhook_api + os.environ.get("DISCORD_SCAN_WEBHOOK_ID2") + "/" + os.environ.get("DISCORD_SCAN_WEBHOOK_TOKEN2")
+    # webhook2 = webhook_api + os.environ.get("DISCORD_SCAN_WEBHOOK_ID2") + "/" + os.environ.get("DISCORD_SCAN_WEBHOOK_TOKEN2")
 
     for i,link in enumerate(links):
         await send_msg(webhook1, link, files[i].replace(".epub", '').replace("done/", '').replace("  ", " "), covers[i])
-        await send_msg(webhook2, link, files[i].replace(".epub", '').replace("done/", '').replace("  ", " "), covers[i])
+        # await send_msg(webhook2, link, files[i].replace(".epub", '').replace("done/", '').replace("  ", " "), covers[i])
