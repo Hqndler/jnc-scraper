@@ -6,7 +6,7 @@ services:
     image : jncscrapper
     build : .
     volumes:
-      - D:\dev\scrapper\jnc-nina_scrapper\shared\:/home/shared/
+      - $PWD:/home/shared/
     networks:
       - jncscrapperbot
 
