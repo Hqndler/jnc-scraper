@@ -24,30 +24,43 @@ class Serie:
         return None
 
     def get_everything(self, soup):
-        divs = soup.find_all('div', class_=['f3gc1kc text normal', 'aside-buttons'])
-        side_elems = ["author", "illustrator", "translator", "adapt", "themes"]
-        index = -1
-        tmp_dict = dict()
+        id_to_key = {
+            'auteur': 'author',
+            'auteurs': 'author',
+            'illustrateur': 'illustrator',
+            'illustrateurs': 'illustrator',
+            'traduction': 'translator',
+            'traductions': 'translator',
+            'adaptation': 'adapt',
+            'adaptations': 'adapt',
+            'th-mes': 'themes'
+        }
+        result = {key : [] for key in id_to_key}
+        section = soup.find('div', class_='fcoxyrb')
+        current_key = None
 
-        for div in divs:
-            if div['class'] == ['aside-buttons']:
-                if tmp_dict.get(side_elems[index]):
-                    tmp_dict.update({side_elems[index] : tmp_dict[side_elems[index]] + ", " + div.text})
-                else:
-                    tmp_dict[side_elems[index]] = div.text
+        for child in section.find_all(['div'], recursive=False):
+            if 'text' in child.get('class', []) and 'normal' in child.get('class', []):
+                header_div = child.find('div', class_='header')
+                if header_div:
+                    current_key = header_div.get('id')
+                    if current_key in id_to_key:
+                        result[id_to_key[current_key]] = []
+                    else:
+                        current_key = None
+            elif 'aside-buttons' in child.get('class', []):
+                text_div = child.find('div', class_='text')
+                if text_div and current_key:
+                    result[id_to_key[current_key]].append(text_div.get_text(strip=True))
 
-            if div['class'] == ['f3gc1kc', 'text', 'normal']:
-                index += 1
+        for key in result:
+            result[key] = ', '.join(result[key]) if result[key] else 'Inconnu'
 
-            elif side_elems[index] == "themes":
-                tmp_dict["themes"] = [i.text for i in div]
-                break
-
-        self.author = tmp_dict["author"]
-        self.illustrator = tmp_dict["illustrator"]
-        self.translator = tmp_dict["translator"]
-        self.adapt = tmp_dict["adapt"]
-        self.themes = tmp_dict["themes"]
+        self.author = result.get("author", "Auteur inconu")
+        self.illustrator = result.get("illustrator", "Illustrateur inconnu")
+        self.translator = result.get("translator", "Traducteur inconnu")
+        self.adapt = result.get("adapt", "Adaptateur inconnu")
+        self.themes = result.get("themes", "Pas de thèmes") # 86 REALLY ?
 
         self.cover_url = self.get_cover(soup)
         if self.cover_url is not None:
